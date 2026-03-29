@@ -1,0 +1,71 @@
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  font-family: "paperlogy", sans-serif;
+  height: auto;
+  padding: 30px 60px;
+  border-radius: 0; 
+
+  background: rgba(229, 248, 241, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  color: #1c1c1c;
+  
+  border-top: 1px solid rgba(229, 248, 241, 1);
+}
+
+
+.footer-top {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.footer-logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.footer-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.footer-bottom-info {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.footer-description {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+.business-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, auto); 
+  gap: 8px 40px; 
+  justify-content: start;
+}
+
+.info-item {
+  color: #555;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.new-line {
+  grid-column: 1; 
+}
