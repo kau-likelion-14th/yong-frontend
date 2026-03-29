@@ -9,16 +9,16 @@
   padding: 30px 60px;
   border-radius: 0; 
 
-  background: rgba(229, 248, 241, 0.72);
+  background: #FFEEFF;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  color: #1c1c1c;
+  color: #000000;
   
-  border-top: 1px solid rgba(229, 248, 241, 1);
+  border-top: 1px solid #FFEEFF;
 }
 
 
@@ -51,6 +51,7 @@
 .footer-description {
   margin: 0 0 12px 0;
   font-weight: 500;
+  color: #000000;
 }
 
 .business-info-grid {
@@ -61,9 +62,14 @@
 }
 
 .info-item {
-  color: #555;
+  color: #000000;
   font-size: 13px;
   white-space: nowrap;
+}
+
+.info-label {
+  color: #666666; /* 연한 검정색 */
+  margin-right: 4px;
 }
 
 .new-line {
