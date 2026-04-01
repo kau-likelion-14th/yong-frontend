@@ -43,3 +43,13 @@
   src: url("./assets/font/Paperlogy-9Black.ttf");
   font-weight: 900;
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}

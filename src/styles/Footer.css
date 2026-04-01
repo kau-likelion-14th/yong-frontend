@@ -1,26 +1,13 @@
-.footer-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+.footer-container {
   font-family: "paperlogy", sans-serif;
-  height: auto;
   padding: 30px 60px;
-  border-radius: 0; 
-
-  background: rgba(229, 248, 241, 0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  
+  background: #FFEEFF;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  color: #1c1c1c;
-  
-  border-top: 1px solid rgba(229, 248, 241, 1);
+  color: #000000;
+  width: 100%;
 }
-
 
 .footer-top {
   display: flex;
@@ -61,9 +48,12 @@
 }
 
 .info-item {
-  color: #555;
-  font-size: 13px;
   white-space: nowrap;
+}
+
+.info-label {
+  color: #666666;
+  margin-right: 4px;
 }
 
 .new-line {
