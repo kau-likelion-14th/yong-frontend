@@ -1,9 +1,4 @@
-.footer-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+.footer-container {
   font-family: "paperlogy", sans-serif;
   padding: 30px 60px;
   background: #FFEEFF;
@@ -11,6 +6,7 @@
   flex-direction: column;
   box-sizing: border-box;
   color: #000000;
+  width: 100%;
 }
 
 .footer-top {

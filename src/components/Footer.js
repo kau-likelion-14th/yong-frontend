@@ -4,7 +4,7 @@ import logo from '../assets/img/logo.png';
 
 function Footer() {
   return (
-    <footer className="footer-fixed">
+    <footer className="footer-container">
       <div className="footer-top">
         <div className="footer-logo-area">
           <img src={logo} alt="LTE 로고" className="footer-logo" />
