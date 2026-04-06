@@ -20,10 +20,10 @@ const MainPage = () => {
     const todayKey = toDateKey(new Date()); // 오늘 날짜 키 생성
     return {
       [todayKey]: [ // 초기 데이터 (오늘 날짜에 예시 데이터 4개를 넣어둠)
-        { id: uid(), text: '리액트 공부하기', category: '공부', completed: true },
-        { id: uid(), text: '공부하기', category: '공부', completed: true },
-        { id: uid(), text: '헬스장 가기', category: '운동', completed: false },
-        { id: uid(), text: '동아리 회의 참석', category: '동아리', completed: false },
+        { id: uid(), text: '멋사 과제하기', category: 'Today', completed: true },
+        { id: uid(), text: '자구 공부하기', category: 'Today', completed: true },
+        { id: uid(), text: '책 읽기', category: 'Do', completed: false },
+        { id: uid(), text: '동아리 회의 참석', category: '일정', completed: false },
       ]
     };
   });

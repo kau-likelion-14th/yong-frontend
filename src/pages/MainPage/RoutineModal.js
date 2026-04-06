@@ -11,17 +11,25 @@ const RoutineModal = ({
 }) => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [repeatDays, setRepeatDays] = useState(null);
+    const [repeatDays, setRepeatDays] = useState([]);
 
     useEffect(() => {
         if (!isOpen) return;
 
         setStartDate(initialRoutine?.startDate || "");
         setEndDate(initialRoutine?.endDate || "");
-        setRepeatDays(initialRoutine?.repeatDays ?? null);
+        setRepeatDays(initialRoutine?.repeatDays || []);
     }, [isOpen, initialRoutine]);
 
     if (!isOpen) return null;
+
+    const handleDayToggle = (idx) => {
+        setRepeatDays((prev) =>
+            prev.includes(idx)
+                ? prev.filter((d) => d !== idx)
+                : [...prev, idx].sort()
+        );
+    };
 
     const handleSave = () => {
         onSave({
@@ -51,7 +59,6 @@ const RoutineModal = ({
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
                         />
-                        <div className="date-initial">{startDate || "없음"}</div>
                     </div>
                 </div>
 
@@ -64,7 +71,6 @@ const RoutineModal = ({
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
                         />
-                        <div className="date-initial">{endDate || "없음"}</div>
                     </div>
                 </div>
 
@@ -72,19 +78,13 @@ const RoutineModal = ({
                     <div className="modal-label">반복</div>
                     <div className="modal-categories">
                         {Days.map((day, idx) => (
-                            <label
+                            <div
                                 key={day}
-                                className={`modal-categoryitem ${repeatDays === idx ? "on" : ""}`}
+                                className={`modal-categoryitem ${repeatDays.includes(idx) ? "on" : ""}`}
+                                onClick={() => handleDayToggle(idx)}
                             >
                                 <span>{day}</span>
-                                <input
-                                    type="radio"
-                                    name="repeatDays"
-                                    value={idx}
-                                    checked={repeatDays === idx}
-                                    onChange={() => setRepeatDays(idx)}
-                                />
-                            </label>
+                            </div>
                         ))}
                     </div>
                 </div>

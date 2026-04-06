@@ -1,0 +1,372 @@
+.todo-container {
+    width: 100%;
+    max-width: 440px;
+    font-family: 'Paperlogy', sans-serif;
+}
+
+.todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.todo-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333333;
+}
+
+.todo-add {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #333333;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 4px;
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: #f8f8f8;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.todo-item:hover {
+    background-color: #f0f0f0;
+}
+
+.todo-item.done {
+    opacity: 0.6;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    margin-right: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.checkbox.checked {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 16px;
+}
+
+.todo-text {
+    flex: 1;
+    font-size: 18px;
+    color: #333333;
+    align-self: center;
+}
+
+.todo-item.done .todo-text {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.todo-category {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(2px);
+}
+
+.modal-container {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 32px;
+    padding: 40px 28px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #333333;
+}
+
+.modal-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.modal-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c1c1c;
+}
+
+.modal-categories {
+    display: flex;
+    gap: 7px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.modal-categoryitem {
+    cursor: pointer;
+    position: relative;
+}
+
+.modal-categoryitem span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid #eee;
+    background: #fff;
+    color: #888;
+    transition: all 0.2s;
+}
+
+.modal-container:has(.routine-title) .modal-categoryitem span {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+.modal-categoryitem.selected span,
+.modal-categoryitem.on span {
+    border-color: #333333;
+    background: #333333;
+    color: #fff !important;
+}
+
+.modal-categoryitem input {
+    display: none;
+}
+
+.input-wrapper {
+    width: 100%;
+}
+
+.text-input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.routine-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.routine-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.routine-button {
+    font-size: 20px;
+    color: #999;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.leftbutton, .rightbutton, .leftbutton2 {
+    flex: 1;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    background-color: transparent;
+}
+
+.leftbutton {
+    border: 2px solid #FF383C;
+    color: #FF383C;
+}
+
+.leftbutton:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.leftbutton:not(:disabled):hover {
+    background-color: #FF383C;
+    color: #000;
+}
+
+.rightbutton {
+    border: 2px solid #0A84FF;
+    color: #0A84FF;
+}
+
+.rightbutton:disabled {
+    cursor: default;
+}
+
+.rightbutton:not(:disabled) {
+    background-color: #0A84FF;
+    color: #fff;
+}
+
+.rightbutton:not(:disabled):hover {
+    background-color: #0A84FF;
+    color: #fff;
+}
+
+.leftbutton2 {
+    background-color: #f1f1f1;
+    color: #666;
+    border: none;
+}
+
+.routine-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.routine-close {
+    position: absolute;
+    left: -10px;
+    font-size: 36px;
+    font-weight: 300;
+    cursor: pointer;
+    color: #1c1c1c;
+    padding: 10px;
+}
+
+.routine-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333333;
+}
+
+.date-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    position: relative;
+}
+
+.date-input {
+    flex: 1;
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c1c1c;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.date-initial {
+    min-width: 60px;
+    padding: 16px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    background-color: #f1f1f1;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.date-initial:hover {
+    background-color: #e5e5e5;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}

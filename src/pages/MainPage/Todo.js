@@ -4,10 +4,10 @@ import TodoModal from "./TodoModal";
 
 const uid = () => Date.now() + Math.random();
 
-const Categories = { // 카테고리별 디자인 설정 (배경색과 글자색)
-    공부: { backgroundColor: '#E5F8F1', color: '#333' },
-    운동: { backgroundColor: '#FFC8BE', color: '#333' },
-    동아리: { backgroundColor: '#B6DAFF', color: '#333' },
+const Categories = {
+    Today: { backgroundColor: '#E5F8F1', color: '#333' },
+    Do: { backgroundColor: '#FFC8BE', color: '#333' },
+    일정: { backgroundColor: '#B6DAFF', color: '#333' },
 };
 
     const toDateKey = (date) => {
@@ -51,19 +51,42 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate }) => {
         );
     };
 
-    const handledSaveTodo = ({text, category}) => { // 저장 버튼 클릭 시 (수정 또는 추가)
+    const handledSaveTodo = ({text, category, routine}) => { // 저장 버튼 클릭 시 (수정 또는 추가)
         if (editingTodo) { // 1. 수정 모드일 때
             setTodos((prev) =>
                 prev.map((t) => 
                     t.id === editingTodo.id 
-                        ? { ...t, text, category } 
+                        ? { ...t, text, category, routine } 
                         : t
                 )
             );
-        } else { // 2. 새로 추가 모드일 때
+        } else if (routine && routine.startDate && routine.endDate && routine.repeatDays?.length > 0) {
+            // 2. 루틴 추가 모드일 때
+            const start = new Date(routine.startDate);
+            const end = new Date(routine.endDate);
+            const daysToRepeat = routine.repeatDays.map(idx => (idx + 1) % 7);
+
+            setTodosByDate((prev) => {
+                const nextData = { ...prev };
+                let current = new Date(start);
+
+                while (current <= end) {
+                    if (daysToRepeat.includes(current.getDay())) {
+                        const key = toDateKey(current);
+                        const list = nextData[key] ?? [];
+                        nextData[key] = [
+                            ...list,
+                            { id: uid(), text, category, completed: false, routine }
+                        ];
+                    }
+                    current.setDate(current.getDate() + 1);
+                }
+                return nextData;
+            });
+        } else {
             setTodos((prev) => [
-                  ...prev, // ← "기존에 있던 애들 다 데리고 와!" (복사)
-                { id: uid(), text, category, completed: false },
+                  ...prev, 
+                { id: uid(), text, category, completed: false, routine },
             ]);
         }
         setIsModalOpen(false);
