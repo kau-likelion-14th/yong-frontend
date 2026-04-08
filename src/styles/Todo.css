@@ -186,7 +186,7 @@
 .modal-categoryitem.on span {
     border-color: #333333;
     background: #333333;
-    color: #fff !important;
+    color: #fff;
 }
 
 .modal-categoryitem input {

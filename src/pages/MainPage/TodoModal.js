@@ -57,7 +57,7 @@ const TodoModal = ({
                                 key={c}
                                 className={`modal-categoryitem ${category === c ? 'selected' : ''}`}
                             >
-                                <span style={categories[c]}>{c}</span> 
+                                <span style={category === c ? {} : categories[c]}>{c}</span> 
                                 <input
                                     type="radio"
                                     name="category"

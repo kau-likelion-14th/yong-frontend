@@ -61,8 +61,8 @@
     position: relative;
 }
 
-.calendar-container .react-calendar__tile--active {
-    background: #333333 !important;
+.calendar-container .react-calendar .react-calendar__tile--active {
+    background: #333333;
     border-radius: 15px;
 }
 
