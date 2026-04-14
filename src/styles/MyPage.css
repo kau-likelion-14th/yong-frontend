@@ -1,0 +1,223 @@
+.mypage-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 120px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  font-family: 'Paperlogy', sans-serif;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  background-color: #fff;
+}
+
+.profile-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.profile-left-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.profile-image-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.profile-img, 
+.profile-img-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: #fff;
+  border: 1px solid #ddd;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-nickname {
+  font-size: 32px;
+  font-weight: 800;
+  color: #333;
+}
+
+.profile-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: 630;
+  font-size: 16px;
+  color: #555;
+}
+
+.input-group input {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #f9f9f9;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: #6385f0;
+  background-color: #fff;
+}
+
+.song-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.song-search-wrapper input {
+  width: 100%;
+  padding-left: 40px;
+}
+
+.music-note {
+  position: absolute;
+  left: 12px;
+  color: #6385f0;
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #6385f0;
+  color: #fff;
+  border: none;
+  padding: 15px 45px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 40px;
+}
+
+.save-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.status-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.stat-card {
+  background-color: #f5f7ff;
+  padding: 25px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-icon {
+  font-size: 20px;
+}
+
+.stat-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #666;
+}
+
+.stat-bottom {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #333;
+}
+
+.stat-value.thin-text {
+  font-weight: 600;
+}
+
+.stat-unit {
+  font-size: 16px;
+  color: #888;
+}
+
+@media (max-width: 1024px) {
+  .mypage-container {
+    padding: 80px 20px;
+  }
+
+  .status-section {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .profile-header-row {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .profile-left-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+
+  .profile-inputs {
+    max-width: 100%;
+  }
+}
