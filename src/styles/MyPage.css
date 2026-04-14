@@ -1,24 +1,27 @@
 .mypage-container {
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 120px 20px;
+  padding: 140px 30px 20px;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 50px;
   font-family: 'Paperlogy', sans-serif;
 }
+
 
 .profile-section {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 80px;
   background-color: #fff;
 }
 
+
 .profile-header-row {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 600px;
 }
 
 .profile-left-content {
@@ -29,8 +32,8 @@
 
 .profile-image-container {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
 }
 
 .profile-img, 
@@ -44,18 +47,18 @@
 
 .edit-icon {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 8px;
+  right: 8px;
   background: #fff;
   border: 1px solid #ddd;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -65,17 +68,22 @@
   color: #333;
 }
 
+.profile-info-main {
+  margin-top: -70px;
+}
+
 .profile-inputs {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
+  gap: 25px;
+  max-width: 550px;
 }
+
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
 }
 
 .input-group label {
@@ -85,7 +93,7 @@
 }
 
 .input-group input {
-  padding: 12px 15px;
+  padding: 18px 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 15px;
@@ -126,13 +134,13 @@
   background-color: #6385f0;
   color: #fff;
   border: none;
-  padding: 15px 45px;
+  padding: 15px 43px;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .save-btn:hover {
@@ -143,7 +151,7 @@
 .status-section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: 60px;
 }
 
 .stat-card {
@@ -174,7 +182,7 @@
 .stat-bottom {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 5px;
 }
 
 .stat-value {
@@ -191,7 +199,6 @@
   font-size: 16px;
   color: #888;
 }
-
 @media (max-width: 1024px) {
   .mypage-container {
     padding: 80px 20px;
@@ -221,3 +228,4 @@
     max-width: 100%;
   }
 }
+
