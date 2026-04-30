@@ -1,22 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 
+const profileImg = "https://via.placeholder.com/120";
+
 const Profile = () => {
   const fileInputRef = useRef(null);
 
   const [nickname] = useState("Likelion#1253");
   const [intro, setIntro] = useState("안녕하세요");
   const [favoriteSong, setFavoriteSong] = useState("내꺼하자 - 인피니트");
+
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [profileImageUrl] = useState("");
-
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
 
   const handleClickEditIcon = () => {
     fileInputRef.current?.click();
@@ -27,6 +22,11 @@ const Profile = () => {
     if (!file) return;
 
     setSelectedImageFile(file);
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
     setPreviewUrl(URL.createObjectURL(file));
   };
 
@@ -38,22 +38,26 @@ const Profile = () => {
       selectedImageFile,
     };
 
-    console.log("저장된 프로필 데이터:", profileData);
-    alert(`프로필이 저장되었습니다!\n한 줄 소개: ${intro}\n좋아하는 노래: ${favoriteSong}\n이미지 파일명: ${selectedImageFile ? selectedImageFile.name : '없음'}`);
+    console.log("저장된 프로필:", profileData);
+    alert("프로필이 저장되었습니다.");
   };
 
-  const displayImageSrc = previewUrl || profileImageUrl;
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  const displayImageSrc = previewUrl || profileImageUrl || profileImg;
 
   return (
     <div className="profile-section">
       <div className="profile-left">
         <div className="profile-top">
           <div className="profile-image-box">
-            {displayImageSrc ? (
-              <img src={displayImageSrc} alt="프로필" className="profile-img" />
-            ) : (
-              <div className="profile-img-empty" />
-            )}
+            <img src={displayImageSrc} alt="" className="profile-img" />
 
             <button
               type="button"
@@ -69,7 +73,6 @@ const Profile = () => {
               ref={fileInputRef}
               className="profile-file-input"
               onChange={handleFileChange}
-              style={{ display: 'none' }}
             />
           </div>
 
@@ -87,14 +90,14 @@ const Profile = () => {
 
           <label className="profile-label">좋아하는 노래</label>
           <div className="song-input-box">
-            <span className="song-icon">♫</span>
+            <span className="song-icon">🎵</span>
             <input
               className="song-input"
               value={favoriteSong}
               onChange={(e) => setFavoriteSong(e.target.value)}
               placeholder="좋아하는 노래를 입력해주세요"
             />
-            <span className="search-icon">🔍</span>
+            <span className="search-icon">⌕</span>
           </div>
         </div>
       </div>
