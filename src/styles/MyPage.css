@@ -31,20 +31,18 @@
   position: relative;
   width: 120px;
   height: 120px;
-}
-
-.profile-img,
-.profile-img-empty {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  background-color: #f8f8f8;
-  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .profile-img {
+  width: 120px;
+  height: 120px;
+  display: block;
+
+  border-radius: 50%;
   object-fit: cover;
+  border: 1px solid #dddddd;
+  box-sizing: border-box;
 }
 
 .profile-edit-btn {
@@ -69,7 +67,6 @@
   align-items: center;
 
   cursor: pointer;
-  z-index: 10;
 }
 
 .profile-file-input {
