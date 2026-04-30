@@ -1,231 +1,252 @@
-.mypage-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 140px 30px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  font-family: 'Paperlogy', sans-serif;
+.mypage {
+  width: 100%;
+  min-height: calc(100vh - 260px);
+  padding: 110px 0 90px;
+  box-sizing: border-box;
+  font-family: "Paperlogy", sans-serif;
 }
-
 
 .profile-section {
+  width: 1080px;
+  margin: 0 auto 46px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.profile-left {
   display: flex;
   flex-direction: column;
-  gap: 80px;
-  background-color: #fff;
 }
 
-
-.profile-header-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 600px;
-}
-
-.profile-left-content {
+.profile-top {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 28px;
+  margin-bottom: 34px;
 }
 
-.profile-image-container {
+.profile-image-box {
   position: relative;
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
 }
 
-.profile-img, 
-.profile-img-placeholder {
-  width: 100%;
-  height: 100%;
+.profile-img,
+.profile-img-empty {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+}
+
+.profile-img {
   object-fit: cover;
-  background-color: #eee;
 }
 
-.edit-icon {
+.profile-edit-btn {
   position: absolute;
+  right: -4px;
   bottom: 8px;
-  right: 8px;
-  background: #fff;
-  border: 1px solid #ddd;
-  width: 40px;
-  height: 40px;
+
+  width: 30px;
+  height: 30px;
+
+  border: none;
   border-radius: 50%;
+
+  background: #7777e8;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   cursor: pointer;
-  font-size: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.profile-file-input {
+  display: none;
 }
 
 .profile-nickname {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 800;
-  color: #333;
+  color: #111111;
 }
 
-.profile-info-main {
-  margin-top: -70px;
+.profile-form {
+  width: 520px;
 }
 
-.profile-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  max-width: 550px;
-}
+.profile-label {
+  display: block;
 
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.input-group label {
-  font-weight: 630;
-  font-size: 16px;
-  color: #555;
-}
-
-.input-group input {
-  padding: 18px 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
   font-size: 15px;
-  background-color: #f9f9f9;
+  font-weight: 600;
+  color: #111111;
+
+  margin-bottom: 10px;
+}
+
+.profile-input {
+  width: 100%;
+  height: 48px;
+
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+
+  padding: 0 14px;
+  box-sizing: border-box;
+
+  font-size: 14px;
+  font-family: "Paperlogy", sans-serif;
+
+  margin-bottom: 18px;
   outline: none;
 }
 
-.input-group input:focus {
-  border-color: #6385f0;
-  background-color: #fff;
+.profile-input:focus {
+  border-color: #8585f4;
 }
 
-.song-search-wrapper {
-  position: relative;
+.song-input-box {
+  width: 100%;
+  height: 48px;
+
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+
   display: flex;
   align-items: center;
+
+  padding: 0 14px;
+  box-sizing: border-box;
 }
 
-.song-search-wrapper input {
-  width: 100%;
-  padding-left: 40px;
+.song-icon {
+  margin-right: 8px;
+  font-size: 15px;
 }
 
-.music-note {
-  position: absolute;
-  left: 12px;
-  color: #6385f0;
+.song-input {
+  flex: 1;
+
+  border: none;
+  outline: none;
+
+  font-family: "Paperlogy", sans-serif;
+  font-size: 14px;
 }
 
 .search-icon {
-  position: absolute;
-  right: 12px;
-  color: #aaa;
-  cursor: pointer;
+  font-size: 24px;
+  color: #8f8f8f;
 }
 
-.save-btn {
-  background-color: #6385f0;
-  color: #fff;
+.profile-save-btn {
+  width: 150px;
+  height: 48px;
+
+  margin-top: 36px;
+
   border: none;
-  padding: 18px 60px;
-  border-radius: 12px;
-  font-size: 20px;
-  font-weight: 700;
+  border-radius: 8px;
+
+  background: #8585f4;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+  font-family: "Paperlogy", sans-serif;
+
   cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 20px;
 }
 
-.save-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+.profile-save-btn:hover {
+  background: #7373ea;
 }
 
 .status-section {
+  width: 1080px;
+  margin: 0 auto;
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 60px;
+  gap: 20px;
 }
 
 .stat-card {
-  background-color: #f5f7ff;
-  padding: 25px;
-  border-radius: 15px;
+  height: 160px;
+
+  background: #f5f5f5;
+  border-radius: 16px;
+
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-
-.stat-top {
-  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
+
+  text-align: center;
 }
 
 .stat-icon {
-  font-size: 20px;
+  font-size: 18px;
+  margin-bottom: 14px;
 }
 
 .stat-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #666;
-}
+  font-size: 16px;
+  font-weight: 500;
+  color: #111111;
 
-.stat-bottom {
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
+  margin-bottom: 18px;
 }
 
 .stat-value {
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 800;
-  color: #333;
-}
-
-.stat-value.thin-text {
-  font-weight: 600;
+  color: #000000;
 }
 
 .stat-unit {
-  font-size: 16px;
-  color: #888;
+  font-size: 25px;
+  font-weight: 800;
 }
-@media (max-width: 1024px) {
-  .mypage-container {
-    padding: 80px 20px;
+
+@media (max-width: 1200px) {
+  .profile-section,
+  .status-section {
+    width: 80%;
+  }
+
+  .profile-form {
+    width: 480px;
+  }
+}
+
+@media (max-width: 900px) {
+  .profile-section {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .profile-save-btn {
+    margin-top: 0;
   }
 
   .status-section {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 
-  .profile-header-row {
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-  }
-
-  .profile-left-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .save-btn {
+  .profile-form {
     width: 100%;
   }
-
-  .profile-inputs {
-    max-width: 100%;
-  }
 }
-

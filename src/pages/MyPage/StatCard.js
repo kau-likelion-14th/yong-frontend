@@ -1,21 +1,22 @@
-import React from 'react';
+import React from "react";
 
 const StatCard = ({ stats }) => {
-    const { icon, title, statistics } = stats;
-    const isThinText = statistics.value === "토요일";
+  const isThinText = stats.statistics.value === "토요일";
 
-    return (
-        <div className="stat-card">
-            <div className="stat-top">
-                <span className="stat-icon">{icon}</span>
-                <span className="stat-title">{title}</span>
-            </div>
-            <div className="stat-bottom">
-                <span className={`stat-value ${isThinText ? 'thin-text' : ''}`}>{statistics.value}</span>
-                {statistics.unit && <span className="stat-unit">{statistics.unit}</span>}
-            </div>
-        </div>
-    );
+  return (
+    <div className="stat-card">
+      <div className="stat-icon">{stats.icon}</div>
+      <div className="stat-title">{stats.title}</div>
+      <div className="stat-value">
+        <span className={isThinText ? 'thin-text' : ''}>
+          {stats.statistics.value}
+        </span>
+        {stats.statistics.unit && (
+          <span className="stat-unit">{stats.statistics.unit}</span>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default StatCard;
