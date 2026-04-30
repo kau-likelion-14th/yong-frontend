@@ -97,16 +97,16 @@
 .friend-info__empty{
     height: 16px;
 }
-
 .friend-remove-btn{
     margin-left: 0;
 
-    background: none;
+    background: transparent;
+    background-color: transparent;
     border: none;
     cursor:pointer;
 
-    width: 44px;
-    height:44px;
+    width: 48px;
+    height:48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -117,8 +117,8 @@
 }
 
 .friend-remove-icon{
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 
     display: block;
