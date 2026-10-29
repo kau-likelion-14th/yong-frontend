@@ -79,7 +79,6 @@ function FriendDetailPage() {
 
   // 달력에서 내가 찍은 날짜를 기억함. 날짜를 찍을 때마다 이 값이 바뀌고 화면이 다시 그려짐
   const [selectedDate, setSelectedDate] = useState(new Date("2026-05-04"));
-  const [viewDate, setViewDate] = useState(new Date("2026-05-04"));
 
   const [todosByDate] = useState(dummyTodosByDate);
   const [remainingByDate] = useState(dummyRemainingByDate);
@@ -183,10 +182,6 @@ function FriendDetailPage() {
             <FriendCalendar
               initialDate={selectedDate}
               onDateChange={(date) => date && setSelectedDate(date)}
-              onMonthChange={(date) => {
-                if (!date) return;
-                setViewDate(date);
-              }}
               todosByDate={todosByDate}
               remainingByDate={remainingByDate}
             />
