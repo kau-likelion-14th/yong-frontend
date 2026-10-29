@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 
 import "../../styles/Todo.css";
 import "../../styles/FriendTodo.css";
@@ -24,13 +24,6 @@ const FriendTodo = ({ title = "To do List" }) => {
   // 나중에 props를 여기에 연결해서 친구마다 다른 데이터를 보여줄 예정
   const todos = dummyTodos;
   const categories = dummyCategories;
-
-  // useMemo -> todos 배열이 바뀔 때만 실행돼서 전체 할 일 개수와 완료된 개수를 계산
-  const counts = useMemo(() => {
-    const total = todos.length; // 전체 할 일의 개수
-    const done = todos.filter((t) => t.completed).length; // filter로 true된 것만 개수 셈
-    return { total, done };
-  }, [todos]);
 
   return (
     <div className="friend-todo">
