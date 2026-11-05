@@ -4,7 +4,6 @@ import api from "../../Api";
 import config from "../../Config";
 import FriendCalendar from "./FriendCalendar";
 import FriendTodo from "./FriendTodo";
-
 import "../../styles/FriendDetailPage.css";
 
 // 할 일 분류에 따라 줄 색깔들
