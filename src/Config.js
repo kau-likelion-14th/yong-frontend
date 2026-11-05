@@ -8,6 +8,14 @@ const config = {
         WITHDRAW: "/api/auth/withdraw",
     },
 
+    FOLLOW: {
+        FOLLOWINGS: "/api/follow/followings",
+        AVAILABLE: "/api/follow",
+        DELETE: "/api/follow",
+        SEARCH: "/api/follow/search",
+        CREATE: "/api/follow",
+    },
+
 };
 
 export default config;

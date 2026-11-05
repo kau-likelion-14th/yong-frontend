@@ -2,7 +2,14 @@ import React, { useEffect } from "react";
 import "../../styles/FriendUnfollowModal.css";
 
 // 친구를 목록에서 지울지 물어보는 팝업(모달)창
-function FriendUnfollowModal({ isOpen, friend, onConfirm, onClose }) {
+function FriendUnfollowModal({
+  isOpen,
+  friend,
+  onConfirm,
+  onClose,
+  isSubmitting = false,
+  error = "",
+}) {
   
   // 모달이 열렸을 때만 키보드 입력을 지켜봄
   useEffect(() => {
@@ -37,6 +44,8 @@ function FriendUnfollowModal({ isOpen, friend, onConfirm, onClose }) {
         className="friend-unfollow-modal__content"
         role="dialog"
         aria-modal="true"
+        aria-label="언팔로우 확인"
+        aria-busy={isSubmitting}
       >
         <p className="friend-unfollow-modal__text">
           <span className="friend-unfollow-modal__name">{displayName}</span>{" "}
@@ -46,14 +55,17 @@ function FriendUnfollowModal({ isOpen, friend, onConfirm, onClose }) {
           삭제하시겠습니까?
         </p>
 
+        {error && <p role="alert">{error}</p>}
+
         <div className="friend-unfollow-modal__actions">
           {/* 예: 부모(FriendPage)가 넘겨준 진짜 삭제 함수(onConfirm)를 실행 */}
           <button
             type="button"
             className="friend-unfollow-modal__btn friend-unfollow-modal__btn--yes"
             onClick={onConfirm}
+            disabled={isSubmitting}
           >
-            예
+            {isSubmitting ? "처리 중..." : "예"}
           </button>
 
           {/* 아니오: 그냥 창만 닫음 */}
@@ -61,6 +73,7 @@ function FriendUnfollowModal({ isOpen, friend, onConfirm, onClose }) {
             type="button"
             className="friend-unfollow-modal__btn friend-unfollow-modal__btn--no"
             onClick={onClose}
+            disabled={isSubmitting}
           >
             아니오
           </button>

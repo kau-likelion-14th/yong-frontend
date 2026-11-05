@@ -12,6 +12,9 @@ function FriendList(
     friends = [], // 부모(FriendPage)가 관리하는 친구 배열 데이터를 props로 넘겨받음
     onClickRemove,
     emptyText = "팔로우하는 친구가 없습니다.",
+    loading = false,
+    error = "",
+    onRetry,
   }
 ) {
   // 페이지 이동할 때 쓰는 도구
@@ -29,10 +32,21 @@ function FriendList(
       <h2 className="friend-list__title">{title}</h2>
 
       {/* 
-        friends 배열 안에 데이터가 없으면 '친구가 없다'는 문구를 보여주고, 
+        로딩과 오류를 먼저 확인하고, 목록이 비어 있으면 안내 문구를 보여줌
         데이터가 있으면 map을 돌려서 친구 리스트를 하나씩 화면에 그림
       */}
-      {friends.length === 0 ? (
+      {loading ? (
+        <div className="friend-list__empty" role="status">
+          팔로우 목록을 불러오는 중...
+        </div>
+      ) : error ? (
+        <div className="friend-list__empty">
+          <p role="alert">{error}</p>
+          <button type="button" onClick={onRetry}>
+            다시 시도
+          </button>
+        </div>
+      ) : friends.length === 0 ? (
         <div className="friend-list__empty">{emptyText}</div>
       ) : (
         <ul className="friend-list__items">
@@ -68,7 +82,9 @@ function FriendList(
                 <div className="friend-info">
                   <div className = "friend-info__top">
                     <span className="friend-info__name">{friend.name}</span>
-                    <span className="friend-info__tag">#{friend.tag}</span>
+                    {friend.tag && (
+                      <span className="friend-info__tag">#{friend.tag}</span>
+                    )}
                   </div>
 
                   {/* 소개글(bio)이 있을 때만 화면에 해당 영역을 보여줌 */}
