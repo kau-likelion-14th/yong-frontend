@@ -1,17 +1,58 @@
 import React, { useRef, useState, useEffect } from "react";
+import { get } from "../../Api";
+import condig from "../../Config";
 
 const profileImg = "https://via.placeholder.com/120";
 
 const Profile = () => {
   const fileInputRef = useRef(null);
 
-  const [nickname] = useState("Likelion#1253");
+  const [nickname, setNickname] = useState("Likelion#1253");
   const [intro, setIntro] = useState("안녕하세요");
-  const [favoriteSong, setFavoriteSong] = useState("내꺼하자 - 인피니트");
+  const [favoriteSong, setfavoriteSong] = useState("내꺼하자 - 인피니트");
 
+  const [profileImgUrl, setProfileImgUrl] = useState(null);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [profileImageUrl] = useState("");
+
+
+  useEffect(() => {
+    fetchrofileData();
+  }, []);
+
+  const fetchrofileData = async () => {
+    try {
+      const response = await get(condig.PROFILE.GET);
+
+      const result = response?.result;
+
+      console.log("프로필 데이터:", result);
+      if(!result) return;
+
+      setNickname(result.username ?? "");
+      setIntro(result.intro ?? "");
+      setProfileImgUrl(result.profileImageUrl ?? null);
+
+      const songResponse = await get(condig.YOUTUBE.ME);
+
+      if(
+        songResponse?.isSuccess === false ||
+        !Array.isArray(songResponse?.result) 
+      ){
+        throw new Error("유효하지 않은 노래 데이터 형식");
+      }
+
+      const songs = [...songResponse.result].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+
+      const latest = songs[0];
+
+      setfavoriteSong(latest ? `${latest.title} - ${latest.artist}` : "");
+      } catch (error) {
+      console.error("프로필 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
 
   const handleClickEditIcon = () => {
     fileInputRef.current?.click();
@@ -26,7 +67,6 @@ const Profile = () => {
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
-
     setPreviewUrl(URL.createObjectURL(file));
   };
 
@@ -50,7 +90,7 @@ const Profile = () => {
     };
   }, [previewUrl]);
 
-  const displayImageSrc = previewUrl || profileImageUrl || profileImg;
+  const displayImageSrc = previewUrl || profileImgUrl || profileImg;
 
   return (
     <div className="profile-section">
@@ -94,7 +134,7 @@ const Profile = () => {
             <input
               className="song-input"
               value={favoriteSong}
-              onChange={(e) => setFavoriteSong(e.target.value)}
+              onChange={(e) => setfavoriteSong(e.target.value)}
               placeholder="좋아하는 노래를 입력해주세요"
             />
             <span className="search-icon">⌕</span>
