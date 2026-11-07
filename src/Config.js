@@ -8,6 +8,16 @@ const config = {
         WITHDRAW: "/api/auth/withdraw",
     },
 
+    TODOS: {
+        GET: "/api/todos",
+        CALENDAR: "/api/todos/calendar",
+        COMPLETE: (id, date) => `/api/todos/${encodeURIComponent(id)}/dates/${encodeURIComponent(date)}/complete`,
+    },
+
+    CATEGORIES: {
+        GET: "/api/categories",
+    },
+
     FOLLOW: {
         PROFILE: (id) => `/api/follow/${encodeURIComponent(id)}`,
         TODOS: (id) => `/api/follow/${encodeURIComponent(id)}/todos`,

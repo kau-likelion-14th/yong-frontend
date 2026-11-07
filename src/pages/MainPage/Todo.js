@@ -1,4 +1,6 @@
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
+import {get} from "../../Api";
+import config from "../../Config";
 import "../../styles/Todo.css";
 import TodoModal from "./TodoModal";
 
@@ -17,10 +19,37 @@ const Categories = {
     return `${y}-${m}-${d}`;
 };
 
-const Todo = ({ selectedDate, todosByDate, setTodosByDate }) => {
+const Todo = ({ selectedDate, todosByDate, setTodosByDate, onComplete }) => {
     const dateKey = toDateKey(selectedDate);
+    const [categoryList, setCategoryList] = useState([]);
 
     const todos = useMemo(() => todosByDate[dateKey] ?? [], [todosByDate, dateKey]);
+    const categories = useMemo(() => Object.fromEntries(
+        categoryList.map((c, idx) => [
+            c.categoryName,
+            Categories[c.categoryName] || Object.values(Categories)[idx % Object.keys(Categories).length],
+        ])
+    ), [categoryList]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        get(config.CATEGORIES.GET, {}, { signal: controller.signal })
+            .then((response) => {
+                if (controller.signal.aborted) return;
+                if (response?.isSuccess === false || !Array.isArray(response?.result)) {
+                    throw new Error("유효하지 않은 카테고리 데이터 형식");
+                }
+
+                setCategoryList(response.result);
+            })
+            .catch(() => {
+                if (controller.signal.aborted) return;
+                console.error("카테고리를 불러오지 못했습니다.");
+            });
+
+        return () => controller.abort();
+    }, []);
 
     const setTodos = (updater) => {
         setTodosByDate((prev) => {
@@ -44,11 +73,7 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate }) => {
     };
 
     const TodoCompleted = (id) => {
-        setTodos((prev) =>
-            prev.map((t) =>
-                t.id === id ? { ...t, completed: !t.completed } : t
-            )
-        );
+        onComplete(id);
     };
 
     const handledSaveTodo = ({text, category, routine}) => { 
@@ -121,7 +146,7 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate }) => {
                         <div className="todo-text">{t.text}</div>
                         <div 
                             className="todo-category"
-                            style={Categories[t.category]}
+                            style={categories[t.category]}
                         >
                             {t.category}
                         </div>
@@ -134,7 +159,7 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate }) => {
                 onSave={handledSaveTodo}
                 onDelete={handledDeleteTodo}
                 initialTodo={editingTodo}
-                categories={Categories}
+                categories={categories}
             />
         </div>
     );
