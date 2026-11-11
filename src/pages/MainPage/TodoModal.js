@@ -12,7 +12,7 @@ const TodoModal = ({
 }) => {
     const isEditMode = Boolean(initialTodo); 
 
-    const [category, setCategory] = useState("Today"); 
+    const [category, setCategory] = useState("");
     const [text, setText] = useState("");
     const [routine, setRoutine] = useState(null);
 
@@ -21,10 +21,15 @@ const TodoModal = ({
     useEffect(() => {
         if (!isOpen) return;
 
-        setCategory(initialTodo?.category || "Today");
+        setCategory(initialTodo?.category || "");
         setText(initialTodo?.text || "");
         setRoutine(initialTodo?.routine || null);
     }, [isOpen, initialTodo]);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        setCategory((prev) => prev || Object.keys(categories)[0] || "");
+    }, [isOpen, categories]);
 
     if (!isOpen) return null;
 
