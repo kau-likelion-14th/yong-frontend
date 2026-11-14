@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center; /* 중앙 정렬 추가 */
   align-items: center;
-  padding: 120px 0px; /* 고정 margin 대신 좌우 5% 유연한 여백 사용 */
-  gap: 200px; /* 캘린더와 투두 사이 간격 */
+  padding: 120px 24px;
+  gap: clamp(32px, 10vw, 200px);
   font-family: 'Paperlogy', sans-serif;
 }
 
@@ -29,6 +29,7 @@
     flex-direction: column; /* 세로 정렬 */
     align-items: center;    
     margin: 0;              /* 기존 마진 초기화 */
+    gap: 40px;
   }
 
   .calendar-container .react-calendar {
@@ -36,7 +37,7 @@
   }
 
   .todo-container {
-    max-width: 100%;
+    max-width: 440px;
   }
 }
 

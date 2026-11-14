@@ -16,11 +16,14 @@
 }
 
 .profile-left {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .profile-top {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 28px;
@@ -74,6 +77,8 @@
 }
 
 .profile-nickname {
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-size: 26px;
   font-weight: 800;
   color: #111111;
@@ -135,6 +140,7 @@
 
 .song-input {
   flex: 1;
+  min-width: 0;
 
   border: none;
   outline: none;
@@ -146,7 +152,13 @@
 .search-icon {
   font-size: 24px;
   color: #8f8f8f;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
+
+.profile-save-btn:disabled, .search-icon:disabled { opacity: 0.6; cursor: default; }
 
 .profile-save-btn {
   width: 150px;
@@ -246,4 +258,80 @@
   .profile-form {
     width: 100%;
   }
+}
+
+@media (max-width: 560px) {
+  .profile-section, .status-section { width: calc(100% - 48px); }
+  .profile-left { width: 100%; }
+  .profile-top { gap: 16px; }
+  .profile-image-box, .profile-img { width: 88px; height: 88px; }
+  .profile-nickname { font-size: 20px; }
+}
+
+.profile-form .search-results {
+  margin-top: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid #e7e5f0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(58, 48, 92, 0.06);
+}
+
+.profile-form .search-search-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #f0eef5;
+  background: #ffffff;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.profile-form .search-search-item:last-child {
+  border-bottom: none;
+}
+
+.profile-form .search-search-item:hover {
+  background: #f6f4ff;
+}
+
+.profile-form .search-search-item:focus-visible {
+  outline: 2px solid #8585f4;
+  outline-offset: -2px;
+  background: #f6f4ff;
+}
+
+.search-song-title,
+.search-song-artist {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-song-title {
+  color: #292633;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.search-song-artist {
+  color: #8a8696;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.profile-form .search-results > p {
+  margin: 0;
+  padding: 18px 16px;
+  color: #8a8696;
+  font-size: 13px;
 }

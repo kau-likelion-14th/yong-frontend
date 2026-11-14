@@ -67,7 +67,7 @@ function Loginpage() {
       .post(
         config.AUTH.KAKAO,
         { code },
-        { withCredentials: true }
+        { baseURL: config.API_URL, withCredentials: true }
       )
       .then(({ data }) => {
         const result = data?.result;
@@ -80,6 +80,7 @@ function Loginpage() {
 
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("user", JSON.stringify(user));
+        window.dispatchEvent(new Event("auth:changed"));
 
         navigate("/", { replace: true });
       })

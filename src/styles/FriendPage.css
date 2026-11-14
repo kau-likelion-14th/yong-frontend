@@ -1,6 +1,6 @@
 .friend-page {
     width: 100%;
-    min-height: calc(100vh-120px);
+    min-height: calc(100vh - 120px);
     margin: 80px 0;
 }
 
@@ -13,7 +13,11 @@
 
 .friend-page__grid{
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     gap: 80px;
     align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+    .friend-page__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
 }

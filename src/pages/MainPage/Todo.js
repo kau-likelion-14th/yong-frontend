@@ -1,10 +1,9 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {get} from "../../Api";
 import config from "../../Config";
 import "../../styles/Todo.css";
 import TodoModal from "./TodoModal";
-
-const uid = () => Date.now() + Math.random();
+import { loadTodo, saveTodo, deleteTodo } from "./todoApi";
 
 const Categories = {
     Today: { backgroundColor: '#E5F8F1', color: '#333' },
@@ -19,9 +18,14 @@ const Categories = {
     return `${y}-${m}-${d}`;
 };
 
-const Todo = ({ selectedDate, todosByDate, setTodosByDate, onComplete }) => {
+const Todo = ({ selectedDate, todosByDate, onComplete, onChanged, loading, loadError, completingId }) => {
     const dateKey = toDateKey(selectedDate);
     const [categoryList, setCategoryList] = useState([]);
+    const [error, setError] = useState("");
+    const [categoryRetry, setCategoryRetry] = useState(0);
+    const [submitting, setSubmitting] = useState(false);
+    const busy = useRef(false);
+    const detailRequest = useRef(null);
 
     const todos = useMemo(() => todosByDate[dateKey] ?? [], [todosByDate, dateKey]);
     const categories = useMemo(() => Object.fromEntries(
@@ -45,89 +49,89 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate, onComplete }) => {
             })
             .catch(() => {
                 if (controller.signal.aborted) return;
-                console.error("카테고리를 불러오지 못했습니다.");
+                setError("카테고리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.");
             });
 
         return () => controller.abort();
-    }, []);
-
-    const setTodos = (updater) => {
-        setTodosByDate((prev) => {
-            const current = prev[dateKey] ?? [];
-            const nextTodos = typeof updater === "function" ? updater(current) : updater;
-            return { ...prev, [dateKey]: nextTodos };
-        });
-    };
+    }, [categoryRetry]);
 
     const [isModalOpen, setIsModalOpen] = useState(false); 
     const [editingTodo, setEditingTodo] = useState(null);
 
+    useEffect(() => {
+        detailRequest.current?.abort();
+        setIsModalOpen(false);
+        setEditingTodo(null);
+        return () => detailRequest.current?.abort();
+    }, [dateKey]);
+
     const openModal = () => {
+        if (busy.current) return;
+        setError("");
         setEditingTodo(null);
         setIsModalOpen(true);
     };
 
-    const openEditModal = (todo) => {
-        setEditingTodo(todo);
-        setIsModalOpen(true);
+    const openEditModal = async (todo) => {
+        if (busy.current || loading || loadError || completingId != null) return;
+        detailRequest.current?.abort();
+        const controller = new AbortController();
+        detailRequest.current = controller;
+        setError("");
+        try {
+            const detail = await loadTodo(todo.id, { signal: controller.signal });
+            if (controller.signal.aborted) return;
+            setEditingTodo({ ...detail, completed: todo.completed });
+            setIsModalOpen(true);
+        } catch (error) {
+            if (!controller.signal.aborted) setError("수정할 할 일을 불러오지 못했습니다.");
+        }
     };
 
     const TodoCompleted = (id) => {
         onComplete(id);
     };
 
-    const handledSaveTodo = ({text, category, routine}) => { 
-        if (editingTodo) {
-            setTodos((prev) =>
-                prev.map((t) => 
-                    t.id === editingTodo.id 
-                        ? { ...t, text, category, routine } 
-                        : t
-                )
-            );
-        } else if (routine && routine.startDate && routine.endDate && routine.repeatDays?.length > 0) {
-            const start = new Date(routine.startDate);
-            const end = new Date(routine.endDate);
-            const daysToRepeat = routine.repeatDays.map(idx => (idx + 1) % 7);
-
-            setTodosByDate((prev) => {
-                const nextData = { ...prev };
-                let current = new Date(start);
-
-                while (current <= end) {
-                    if (daysToRepeat.includes(current.getDay())) {
-                        const key = toDateKey(current);
-                        const list = nextData[key] ?? [];
-                        nextData[key] = [
-                            ...list,
-                            { id: uid(), text, category, completed: false, routine }
-                        ];
-                    }
-                    current.setDate(current.getDate() + 1);
-                }
-                return nextData;
-            });
-        } else {
-            setTodos((prev) => [
-                  ...prev, 
-                { id: uid(), text, category, completed: false, routine },
-            ]);
+    const handledSaveTodo = async (values) => {
+        if (busy.current) return;
+        busy.current = true;
+        setSubmitting(true);
+        try {
+            await saveTodo(values, dateKey, editingTodo);
+            setIsModalOpen(false);
+            onChanged();
+        } catch (error) {
+            if (error.remainingRepeatDays) onChanged();
+            throw error;
+        } finally {
+            busy.current = false;
+            setSubmitting(false);
         }
-        setIsModalOpen(false);
     };
 
-    const handledDeleteTodo = () => {
-        if (!editingTodo) return;
-        setTodos((prev) => prev.filter((t) => t.id !== editingTodo.id));
-        setIsModalOpen(false);
+    const handledDeleteTodo = async () => {
+        if (!editingTodo || busy.current) return;
+        busy.current = true;
+        setSubmitting(true);
+        try {
+            await deleteTodo(editingTodo.id, dateKey);
+            setIsModalOpen(false);
+            onChanged();
+        } finally {
+            busy.current = false;
+            setSubmitting(false);
+        }
     };
 
     return (
         <div className="todo-container">
             <div className="todo-header">
                 <div className="todo-title">To do List</div>
-                <button className="todo-add" onClick={openModal}>+</button> 
+                <button className="todo-add" aria-label="할 일 추가" disabled={loading || submitting} onClick={openModal}>+</button>
             </div>
+            {(error || loadError) && <div role="alert"><p>{error || loadError}</p><button type="button" onClick={() => { setError(""); setCategoryRetry((value) => value + 1); onChanged(); }}>다시 시도</button></div>}
+            {loading && <p role="status">할 일을 불러오는 중...</p>}
+            {!loading && !loadError && !todos.length && <p>등록된 할 일이 없습니다.</p>}
             <div className="todo-list">
                 {todos.map((t) => (
                     <div 
@@ -137,6 +141,8 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate, onComplete }) => {
                     >
                         <button 
                             className={`checkbox ${t.completed ? 'checked' : ''}`} 
+                            aria-label={`${t.text} ${t.completed ? "완료 취소" : "완료"}`}
+                            disabled={loading || completingId != null || submitting}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 TodoCompleted(t.id);
@@ -155,11 +161,12 @@ const Todo = ({ selectedDate, todosByDate, setTodosByDate, onComplete }) => {
             </div>
             <TodoModal 
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => { if (!busy.current) setIsModalOpen(false); }}
                 onSave={handledSaveTodo}
                 onDelete={handledDeleteTodo}
                 initialTodo={editingTodo}
                 categories={categories}
+                isSubmitting={submitting}
             />
         </div>
     );

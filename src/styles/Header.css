@@ -74,7 +74,7 @@
 }
 
 .header-right{
-    display: felx;
+    display: flex;
     align-items: center;
     gap: 12px;
     margin-right: 24px;
@@ -92,4 +92,21 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+    .header { padding: 0 20px; }
+    .header-left { margin-left: 0; }
+    .header-title { display: none; }
+    .header-nav { position: static; left: auto; transform: none; gap: 24px; }
+    .header-right { margin-right: 0; }
+    .user-name { margin-right: 0; font-size: 14px; }
+}
+
+@media (max-width: 560px) {
+    .header { left: 12px; right: 12px; padding: 0 14px; gap: 12px; }
+    .header-nav { gap: 16px; }
+    .nav-item { font-size: 14px; }
+    .header-logo { width: 28px; height: 28px; }
+    .user-name { display: none; }
 }
