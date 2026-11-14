@@ -113,7 +113,7 @@ function FriendSearch({
 
   // 검색 결과 유저를 클릭했을 때 상세 페이지로 이동 함
   const goFriendDetail = (friend) => {
-    navigate("/friends/detail", { state: { friend } });
+    navigate(`/friends/${friend.id}`, { state: { friend } });
   };
 
   return (

@@ -4,22 +4,27 @@ import { NavLink, useNavigate } from "react-router-dom";
 import logoutIcon from "../assets/icon/logout.png"
 import api from "../Api";
 import config from "../Config";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 function Header() {
     const navigate = useNavigate();
     const [loggingOut, setLoggingOut] = useState(false);
 
-    let userName = "";
-
-    try{
-        userName = 
-            JSON.parse(localStorage.getItem("user") || "null"
-        )?.username || "";
-    } catch {
-
-    }
+    const [userName, setUserName] = useState("");
+    useEffect(() => {
+        const sync = () => {
+            try { setUserName(JSON.parse(localStorage.getItem("user") || "null")?.username || ""); }
+            catch { setUserName(""); }
+        };
+        sync();
+        window.addEventListener("auth:changed", sync);
+        window.addEventListener("storage", sync);
+        return () => {
+            window.removeEventListener("auth:changed", sync);
+            window.removeEventListener("storage", sync);
+        };
+    }, []);
 
     const handleLogout = async () => {
         if (loggingOut) return;

@@ -1,5 +1,5 @@
 const config = {
-    API_URL: "",
+    API_URL: process.env.REACT_APP_API_URL || "",
 
     AUTH: {
         KAKAO: "/api/auth/kakao",
@@ -10,6 +10,8 @@ const config = {
 
     TODOS: {
         GET: "/api/todos",
+        DETAIL: (id) => `/api/todos/${encodeURIComponent(id)}`,
+        DELETE: (id, date) => `/api/todos/${encodeURIComponent(id)}/dates/${encodeURIComponent(date)}`,
         CALENDAR: "/api/todos/calendar",
         COMPLETE: (id, date) => `/api/todos/${encodeURIComponent(id)}/dates/${encodeURIComponent(date)}/complete`,
     },
@@ -34,6 +36,16 @@ const config = {
         PUT: "/api/profile",
         DELETE: "/api/profile",
         INTRO: "/api/profile/intro",
+    },
+
+    STATISTICS: {
+        GET: "/api/statistic",
+    },
+
+    YOUTUBE: {
+        SEARCH: "/api/youtube/search",
+        SAVE: "/api/youtube/save",
+        ME: "/api/youtube/me",
     },
 };
 

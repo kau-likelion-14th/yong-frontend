@@ -4,10 +4,12 @@ const StatCard = ({ stats }) => {
   return (
     <div className="stat-card">
       <div className="stat-icon">{stats.icon}</div>
-      <div className="stat-title">{stats.title}</div>
+      <div className="stat-title">{stats.title}
+      </div>
+
       <div className="stat-value">
-        {stats.statistics.value}
-        <span className="stat-unit">{stats.statistics.unit}</span>
+        <span>{stats.statistics.value}</span>
+        {stats.statistics.unit && <span className="stat-unit">{stats.statistics.unit}</span>}
       </div>
     </div>
   );

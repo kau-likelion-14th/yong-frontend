@@ -43,11 +43,13 @@ export default function ProtectedRoute() {
     };
 
     window.addEventListener("auth:changed", sync);
+    window.addEventListener("storage", sync);
     checkLogin();
 
     return () => {
       active = false;
       window.removeEventListener("auth:changed", sync);
+      window.removeEventListener("storage", sync);
     };
   }, []);
 

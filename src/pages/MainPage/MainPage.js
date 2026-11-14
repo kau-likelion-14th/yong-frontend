@@ -4,6 +4,7 @@ import config from "../../Config";
 import CustomCalendar from "./Calendar";
 import Todo from "./Todo";
 import "../../styles/MainPage.css";
+import { toTodoModel } from "./todoApi";
 
 const toDateKey = (date) => { // 날짜 객체를 "YYYY-MM-DD" 문자열로 바꾸는 함수 (달력과 Todo가 같은 키를 쓰기 위함)
   const y = date.getFullYear();
@@ -19,12 +20,18 @@ const MainPage = () => {
   const [remainingByDate, setRemainingByDate] = useState({});
   const [refresh, setRefresh] = useState(0);
   const completeRequest = useRef(null);
+  const [loadError, setLoadError] = useState("");
+  const [calendarError, setCalendarError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [completingId, setCompletingId] = useState(null);
   const dateKey = toDateKey(selectedDate);
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth() + 1;
 
   useEffect(() => {
     const controller = new AbortController();
+    setLoading(true);
+    setLoadError("");
 
     get(config.TODOS.GET, { date: dateKey }, { signal: controller.signal })
       .then((response) => {
@@ -33,20 +40,15 @@ const MainPage = () => {
           throw new Error("유효하지 않은 Todo 데이터 형식");
         }
 
-        const todos = response.result.map((todo) => ({
-          id: todo.todoId,
-          text: todo.description,
-          category: todo.categoryName,
-          completed: todo.completed,
-        }));
+        const todos = response.result.map(toTodoModel);
 
         setTodosByDate((prev) => ({ ...prev, [dateKey]: todos }));
       })
       .catch(() => {
         if (controller.signal.aborted) return;
-        setTodosByDate((prev) => ({ ...prev, [dateKey]: [] }));
-        console.error("할 일을 불러오지 못했습니다.");
-      });
+        setLoadError("할 일을 불러오지 못했습니다. 다시 시도해주세요.");
+      })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
 
     return () => controller.abort();
   }, [dateKey, refresh]);
@@ -55,6 +57,7 @@ const MainPage = () => {
     const controller = new AbortController();
 
     setRemainingByDate({});
+    setCalendarError("");
 
     get(config.TODOS.CALENDAR, { year, month }, { signal: controller.signal })
       .then((response) => {
@@ -69,7 +72,7 @@ const MainPage = () => {
       })
       .catch(() => {
         if (controller.signal.aborted) return;
-        console.error("캘린더를 불러오지 못했습니다.");
+        setCalendarError("달력의 기록을 불러오지 못했습니다.");
       });
 
     return () => controller.abort();
@@ -86,6 +89,8 @@ const MainPage = () => {
 
     const controller = new AbortController();
     completeRequest.current = controller;
+    setCompletingId(id);
+    setLoadError("");
 
     try {
       const response = await patch(
@@ -99,18 +104,24 @@ const MainPage = () => {
         throw new Error("완료 상태 변경 실패");
       }
 
+      setTodosByDate((prev) => ({ ...prev, [dateKey]: (prev[dateKey] || []).map((item) =>
+        item.id === id ? { ...item, completed: response.result.completed } : item
+      ) }));
+
       setRefresh((prev) => prev + 1);
     } catch {
       if (!controller.signal.aborted) {
-        console.error("완료 상태를 변경하지 못했습니다.");
+        setLoadError("완료 상태를 저장하지 못했습니다. 다시 시도해주세요.");
       }
     } finally {
       completeRequest.current = null;
+      setCompletingId(null);
     }
   };
 
   return (
     <div className="mainpage-container">
+      {calendarError && <p role="alert">{calendarError}</p>}
       <CustomCalendar 
         initialDate={selectedDate} // 현재 선택된 날짜 전달
         onDateChange={setSelectedDate} // 달력에서 날짜 클릭 시 selectedDate를 바꾸는 함수 전달
@@ -120,8 +131,11 @@ const MainPage = () => {
       <Todo 
         selectedDate={selectedDate} // "지금 몇 일을 보고 있는가?" 정보 전달
         todosByDate={todosByDate} // 할 일 목록을 보여주기 위한 데이터 전달
-        setTodosByDate={setTodosByDate} // 새로운 할 일을 추가하거나 완료 처리할 때 쓸 변경 함수 전달
         onComplete={TodoCompleted}
+        onChanged={() => setRefresh((value) => value + 1)}
+        loading={loading}
+        loadError={loadError}
+        completingId={completingId}
       />
     </div>
   );

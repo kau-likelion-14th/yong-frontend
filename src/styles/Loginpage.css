@@ -118,6 +118,7 @@ body{
 }
 
 .kakao-login-btn{
+    width: min(420px, 100%);
     margin: 50px auto 0;
     border: none;
     background: none;
@@ -126,8 +127,7 @@ body{
 }
 
 .kakao-login-btn img{
-    width: 420px;
-    max-width: 430px;
+    width: 100%;
     height: auto;
     display: block;
 }
@@ -153,5 +153,11 @@ body{
 
 .copyright-icon{
     font-weight: 700;
+}
+
+@media (max-width: 480px) {
+    .login-card { padding: 32px 20px; }
+    .login-logo { margin-top: 32px; }
+    .login-footer { margin-top: 64px; flex-wrap: wrap; font-size: 13px; }
 }
 

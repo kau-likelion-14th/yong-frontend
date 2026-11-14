@@ -57,6 +57,7 @@
 }
 
 .checkbox {
+    flex-shrink: 0;
     width: 24px;
     height: 24px;
     border: 2px solid #ddd;
@@ -83,6 +84,8 @@
 
 .todo-text {
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-size: 18px;
     color: #333333;
     align-self: center;
@@ -94,6 +97,7 @@
 }
 
 .todo-category {
+    flex-shrink: 0;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 14px;
@@ -116,6 +120,8 @@
 
 .modal-container {
     background: white;
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
     width: 90%;
     max-width: 400px;
     border-radius: 32px;
@@ -160,6 +166,15 @@
     position: relative;
 }
 
+button.modal-categoryitem {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    font-family: inherit;
+}
+
+.routine-row:disabled { cursor: default; opacity: 0.5; }
+
 .modal-categoryitem span {
     display: flex;
     justify-content: center;
@@ -175,11 +190,19 @@
 }
 
 .modal-container:has(.routine-title) .modal-categoryitem span {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    max-width: 40px;
+    height: auto;
+    aspect-ratio: 1;
     padding: 0;
     border-radius: 50%;
     font-size: 14px;
+}
+
+.modal-container:has(.routine-title) .modal-categories {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
 }
 
 .modal-categoryitem.selected span,
@@ -332,6 +355,8 @@
 
 .date-input {
     flex: 1;
+    min-width: 0;
+    width: 100%;
     padding: 16px;
     border: 1px solid #eee;
     border-radius: 12px;
