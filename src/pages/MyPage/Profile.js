@@ -227,7 +227,7 @@ const Profile = () => {
 
 
             {searching && <p role="status">노래 검색 중...</p>}
-            {loadError && <div role="alert">{loadError} <button type="button" onClick={() => setRetry((value) => value + 1)}>다시 시도</button></div>}
+            {loadError && <div role="alert">{loadError} <button type="button" className="secondary-button" onClick={() => setRetry((value) => value + 1)}>다시 시도</button></div>}
             {saveError && <p role="alert">{saveError}</p>}
             {showSearchResults &&
             <div className="search-results">

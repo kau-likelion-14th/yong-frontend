@@ -4,14 +4,8 @@ import api from "../../Api";
 import config from "../../Config";
 import FriendCalendar from "./FriendCalendar";
 import FriendTodo from "./FriendTodo";
+import { CATEGORY_LABELS, CATEGORY_STYLES } from "../MainPage/todoApi";
 import "../../styles/FriendDetailPage.css";
-
-// 할 일 분류에 따라 줄 색깔들
-const Categories = {
-  공부: { backgroundColor: "#E5F8F1", color: "#333" },
-  일상: { backgroundColor: "#FFC8BE", color: "#333" },
-  동아리: { backgroundColor: "#B6DAFF", color: "#333" },
-};
 
 // 날짜를 "2026-05-06" 같은 글자로 바꿔주는 도구
 const toDateKey = (date) => {
@@ -82,7 +76,7 @@ function ResourceState({ resource, onRetry }) {
     return (
       <div>
         <p role="alert">{resource.error}</p>
-        <button type="button" onClick={onRetry}>다시 시도</button>
+        <button type="button" className="secondary-button" onClick={onRetry}>다시 시도</button>
       </div>
     );
   }
@@ -125,7 +119,7 @@ function FriendDetailPage() {
   const todos = (todoResource.value || []).map((todo) => ({
     id: todo.todoId,
     text: todo.description,
-    category: todo.categoryName,
+    category: CATEGORY_LABELS[todo.categoryName] || todo.categoryName,
     completed: todo.completed,
   }));
 
@@ -197,7 +191,7 @@ function FriendDetailPage() {
             <FriendTodo
               title="To do List"
               todos={todos}
-              categories={Categories}
+              categories={CATEGORY_STYLES}
             />
           </div>
         </div>

@@ -3,13 +3,7 @@ import {get} from "../../Api";
 import config from "../../Config";
 import "../../styles/Todo.css";
 import TodoModal from "./TodoModal";
-import { loadTodo, saveTodo, deleteTodo } from "./todoApi";
-
-const Categories = {
-    Today: { backgroundColor: '#E5F8F1', color: '#333' },
-    Do: { backgroundColor: '#FFC8BE', color: '#333' },
-    일정: { backgroundColor: '#B6DAFF', color: '#333' },
-};
+import { loadTodo, saveTodo, deleteTodo, CATEGORY_LABELS, CATEGORY_STYLES } from "./todoApi";
 
     const toDateKey = (date) => {
     const y = date.getFullYear();
@@ -31,7 +25,7 @@ const Todo = ({ selectedDate, todosByDate, onComplete, onChanged, loading, loadE
     const categories = useMemo(() => Object.fromEntries(
         categoryList.map((c, idx) => [
             c.categoryName,
-            Categories[c.categoryName] || Object.values(Categories)[idx % Object.keys(Categories).length],
+            CATEGORY_STYLES[CATEGORY_LABELS[c.categoryName] || c.categoryName] || Object.values(CATEGORY_STYLES)[idx % Object.keys(CATEGORY_STYLES).length],
         ])
     ), [categoryList]);
 
@@ -128,9 +122,9 @@ const Todo = ({ selectedDate, todosByDate, onComplete, onChanged, loading, loadE
         <div className="todo-container">
             <div className="todo-header">
                 <div className="todo-title">To do List</div>
-                <button className="todo-add" aria-label="할 일 추가" disabled={loading || submitting} onClick={openModal}>+</button>
+                <button type="button" className="todo-add" aria-label="할 일 추가" disabled={loading || submitting} onClick={openModal} />
             </div>
-            {(error || loadError) && <div role="alert"><p>{error || loadError}</p><button type="button" onClick={() => { setError(""); setCategoryRetry((value) => value + 1); onChanged(); }}>다시 시도</button></div>}
+            {(error || loadError) && <div role="alert"><p>{error || loadError}</p><button type="button" className="secondary-button" onClick={() => { setError(""); setCategoryRetry((value) => value + 1); onChanged(); }}>다시 시도</button></div>}
             {loading && <p role="status">할 일을 불러오는 중...</p>}
             {!loading && !loadError && !todos.length && <p>등록된 할 일이 없습니다.</p>}
             <div className="todo-list">
@@ -155,7 +149,7 @@ const Todo = ({ selectedDate, todosByDate, onComplete, onChanged, loading, loadE
                             className="todo-category"
                             style={categories[t.category]}
                         >
-                            {t.category}
+                            {CATEGORY_LABELS[t.category] || t.category}
                         </div>
                     </div>
                 ))}

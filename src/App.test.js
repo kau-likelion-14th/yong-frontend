@@ -154,6 +154,50 @@ test('저장 실패 시 입력을 유지하고 성공한 것처럼 목록에 추
   expect(db.todos.size).toBe(1);
 });
 
+test('새 카테고리 이름으로 선택하고 저장해도 기존 API 분류와 다시 열린 선택이 일치한다', async () => {
+  mount();
+  await waitFor(() => expect(screen.getByRole('button', { name: '할 일 추가' })).toBeEnabled());
+  fireEvent.click(screen.getByRole('button', { name: '할 일 추가' }));
+  let dialog = screen.getByRole('dialog', { name: '할 일 추가하기' });
+  expect(within(dialog).getByLabelText('오늘')).toHaveAttribute('value', '공부');
+  fireEvent.click(within(dialog).getByLabelText('일정'));
+  fireEvent.change(within(dialog).getByLabelText('내용'), { target: { value: '새 분류 저장' } });
+  fireEvent.click(within(dialog).getByRole('button', { name: '저장' }));
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  expect(db.todos.get(100).categoryName).toBe('일상');
+  expect(await screen.findByText('일정')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('새 분류 저장'));
+  dialog = await screen.findByRole('dialog', { name: '할 일 수정하기' });
+  expect(within(dialog).getByLabelText('일정')).toBeChecked();
+});
+
+test('새 할 일에서 루틴을 해제하면 내용과 분류를 유지하고 일반 할 일로 저장한다', async () => {
+  mount();
+  await waitFor(() => expect(screen.getByRole('button', { name: '할 일 추가' })).toBeEnabled());
+  fireEvent.click(screen.getByRole('button', { name: '할 일 추가' }));
+  const dialog = screen.getByRole('dialog', { name: '할 일 추가하기' });
+  fireEvent.change(within(dialog).getByLabelText('내용'), { target: { value: '루틴 해제 후 저장' } });
+  fireEvent.click(within(dialog).getByLabelText('일정'));
+  fireEvent.click(within(dialog).getByRole('button', { name: /루틴 등록하기/ }));
+  const routine = screen.getByRole('dialog', { name: '루틴 등록하기' });
+  fireEvent.change(within(routine).getByLabelText('시작 날짜'), { target: { value: today } });
+  fireEvent.change(within(routine).getByLabelText('종료 날짜'), { target: { value: today } });
+  fireEvent.click(within(routine).getByRole('button', { name: ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()], exact: true }));
+  fireEvent.click(within(routine).getByRole('button', { name: '저장' }));
+  fireEvent.click(within(dialog).getByRole('button', { name: /루틴 수정하기/ }));
+  const settings = screen.getByRole('dialog', { name: '루틴 수정하기' });
+  expect(within(settings).getByLabelText('시작 날짜')).toHaveValue(today);
+  fireEvent.click(within(settings).getByRole('button', { name: '취소' }));
+  fireEvent.click(within(dialog).getByRole('button', { name: '루틴 해제' }));
+  expect(within(dialog).getByLabelText('내용')).toHaveValue('루틴 해제 후 저장');
+  expect(within(dialog).getByLabelText('일정')).toBeChecked();
+  fireEvent.click(within(dialog).getByRole('button', { name: '저장' }));
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  expect(db.todos.get(100).routineEnabled).toBe(false);
+  expect(db.todos.get(100).categoryName).toBe('일상');
+  expect(db.todos.get(100).dates.size).toBe(1);
+});
+
 test('상세 조회 중 새 할 일을 열면 늦은 조회 응답이 작성 내용을 덮어쓰지 않는다', async () => {
   mount();
   await addTodo('이전 할 일');

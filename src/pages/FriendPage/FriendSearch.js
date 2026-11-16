@@ -150,7 +150,7 @@ function FriendSearch({
       ) : error ? (
         <div className="friend-search__empty">
           <p role="alert">{error}</p>
-          <button type="button" onClick={() => setRetryCount((count) => count + 1)}>
+          <button type="button" className="secondary-button" onClick={() => setRetryCount((count) => count + 1)}>
             다시 시도
           </button>
         </div>
@@ -228,9 +228,10 @@ function FriendSearch({
       )}
 
       {!loading && !error && totalPages > 1 && (
-        <div>
+        <div className="friend-search__pagination">
           <button
             type="button"
+            className="secondary-button"
             disabled={page === 0 || followingId !== null}
             onClick={() => setPage((value) => value - 1)}
           >
@@ -239,6 +240,7 @@ function FriendSearch({
           <span> {page + 1} / {totalPages} </span>
           <button
             type="button"
+            className="secondary-button"
             disabled={page + 1 >= totalPages || followingId !== null}
             onClick={() => setPage((value) => value + 1)}
           >

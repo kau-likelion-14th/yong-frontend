@@ -15,6 +15,7 @@ const RoutineModal = ({
     const [endDate, setEndDate] = useState("");
     const [repeatDays, setRepeatDays] = useState([]);
     const [error, setError] = useState("");
+    const title = initialRoutine ? "루틴 수정하기" : "루틴 등록하기";
 
     useEffect(() => {
         if (!isOpen) return;
@@ -58,12 +59,12 @@ const RoutineModal = ({
                 className="modal-container"
                 role="dialog"
                 aria-modal="true"
-                aria-label="루틴 등록하기"
+                aria-label={title}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="routine-header">
-                    <div className="routine-close" onClick={onClose}>{"‹"}</div>
-                    <div className="routine-title">루틴 등록하기</div>
+                    <button type="button" className="routine-close" aria-label="루틴 설정 닫기" onClick={onClose}>{"‹"}</button>
+                    <div className="routine-title">{title}</div>
                 </div>
 
                 <div className="modal-section">

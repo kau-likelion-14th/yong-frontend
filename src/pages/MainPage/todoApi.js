@@ -3,6 +3,17 @@ import config from "../../Config";
 
 export const WEEK_CODES = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
+export const CATEGORY_LABELS = {
+  공부: "오늘", 운동: "할 일", 일상: "일정", 동아리: "일정",
+  Today: "오늘", Do: "할 일",
+};
+
+export const CATEGORY_STYLES = {
+  오늘: { backgroundColor: "#E5F8F1", color: "#333" },
+  "할 일": { backgroundColor: "#FFC8BE", color: "#333" },
+  일정: { backgroundColor: "#B6DAFF", color: "#333" },
+};
+
 export function validateRoutine(routine) {
   const start = new Date(`${routine.startDate}T12:00:00`);
   const end = new Date(`${routine.endDate}T12:00:00`);

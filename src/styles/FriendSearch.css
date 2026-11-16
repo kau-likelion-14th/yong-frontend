@@ -96,3 +96,13 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.friend-search__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  color: #666;
+  font-size: 14px;
+}

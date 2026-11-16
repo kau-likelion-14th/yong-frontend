@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "../../styles/Todo.css";
 import RoutineModal from "./RoutineModal";
+import { CATEGORY_LABELS } from "./todoApi";
 
 const TodoModal = ({ 
     isOpen, 
@@ -85,7 +86,7 @@ const TodoModal = ({
                                 key={c}
                                 className={`modal-categoryitem ${category === c ? 'selected' : ''}`}
                             >
-                                <span style={category === c ? {} : categories[c]}>{c}</span> 
+                                <span style={category === c ? {} : categories[c]}>{CATEGORY_LABELS[c] || c}</span>
                                 <input
                                     type="radio"
                                     name="category"
@@ -121,9 +122,14 @@ const TodoModal = ({
                         <div className="routine-button">{"›"}</div>
                     </button>
                 </div>
-                {routine && <p>반복 요일: {routine.repeatDays.map((day) => ["월", "화", "수", "목", "금", "토", "일"][day]).join(", ")} / {routine.startDate} ~ {routine.endDate}</p>}
-                {isEditMode && routine && <p>삭제하면 선택한 날짜의 할 일만 삭제됩니다.</p>}
-                {!isEditMode && routine && <button type="button" disabled={isSubmitting} onClick={() => setRoutine(null)}>루틴 해제</button>}
+                {routine && (
+                    <div className="routine-summary">
+                        <p className="routine-days">반복 요일: {routine.repeatDays.map((day) => ["월", "화", "수", "목", "금", "토", "일"][day]).join(", ")}</p>
+                        <p className="routine-period">{routine.startDate} ~ {routine.endDate}</p>
+                        {!isEditMode && <button type="button" className="secondary-button routine-reset" disabled={isSubmitting} onClick={() => setRoutine(null)}>루틴 해제</button>}
+                    </div>
+                )}
+                {isEditMode && routine && <p className="routine-note">삭제하면 선택한 날짜의 할 일만 삭제됩니다.</p>}
                 {error && <p role="alert">{error}</p>}
                 <div className="modal-actions">
                     <button

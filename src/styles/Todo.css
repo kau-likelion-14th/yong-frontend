@@ -18,18 +18,33 @@
 }
 
 .todo-add {
+    position: relative;
     width: 36px;
     height: 36px;
     border-radius: 50%;
     background-color: #333333;
     color: white;
     border: none;
-    font-size: 24px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 4px;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.todo-add::before,
+.todo-add::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+    transform: translate(-50%, -50%);
+}
+
+.todo-add::after {
+    transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .todo-list {
@@ -261,6 +276,47 @@ button.modal-categoryitem {
     color: #999;
 }
 
+.routine-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #f9f9f9;
+}
+
+.routine-days,
+.routine-period,
+.routine-note {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.routine-days {
+    grid-column: 1;
+    color: #333;
+    font-weight: 600;
+}
+
+.routine-period {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    color: #777;
+}
+
+.routine-reset {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.routine-note {
+    color: #777;
+}
+
 .modal-actions {
     display: flex;
     gap: 12px;
@@ -337,6 +393,10 @@ button.modal-categoryitem {
     cursor: pointer;
     color: #1c1c1c;
     padding: 10px;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    line-height: 1;
 }
 
 .routine-title {

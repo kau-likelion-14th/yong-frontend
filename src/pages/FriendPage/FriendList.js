@@ -42,7 +42,7 @@ function FriendList(
       ) : error ? (
         <div className="friend-list__empty">
           <p role="alert">{error}</p>
-          <button type="button" onClick={onRetry}>
+          <button type="button" className="secondary-button" onClick={onRetry}>
             다시 시도
           </button>
         </div>

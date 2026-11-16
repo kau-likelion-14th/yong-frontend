@@ -41,7 +41,7 @@ const Status = () => {
   ];
   return (
     <section aria-label="활동 통계">
-      {error && <div role="alert">{error} <button type="button" onClick={() => setRetry((value) => value + 1)}>다시 시도</button></div>}
+      {error && <div role="alert">{error} <button type="button" className="secondary-button" onClick={() => setRetry((value) => value + 1)}>다시 시도</button></div>}
       <div className="status-section">
         {stats.map((stat) => <StatCard key={stat.title} stats={stat} />)}
       </div>
