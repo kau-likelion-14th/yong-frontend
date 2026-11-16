@@ -13,6 +13,8 @@ let refreshPromise = null;
 
 export const renewAccessToken = () => {
     if (!refreshPromise) {
+        const previousToken = localStorage.getItem("accessToken");
+        const previousUser = localStorage.getItem("user");
         refreshPromise = axios.post(config.AUTH.REISSUE, {}, { baseURL: config.API_URL, withCredentials: true })
 
         .then(({data}) => {
@@ -24,6 +26,9 @@ export const renewAccessToken = () => {
             !token
         ) {
             throw new Error("토큰 재발급에 실패했습니다.");
+        }
+        if (localStorage.getItem("accessToken") !== previousToken || localStorage.getItem("user") !== previousUser) {
+            throw new Error("로그인 상태가 변경되었습니다.");
         }
         localStorage.setItem("accessToken", token);
 
@@ -39,6 +44,7 @@ export const renewAccessToken = () => {
 };
 
 api.interceptors.request.use((request) => {
+    request._sessionUser = localStorage.getItem("user");
     const token = localStorage.getItem("accessToken");
     if (token) {
         request.headers["Authorization"] = `Bearer ${token}`;
@@ -67,6 +73,7 @@ api.interceptors.response.use(
             !authenticationError ||
             !original ||
             original._retry ||
+            original._sessionUser !== localStorage.getItem("user") ||
             url.includes(config.AUTH.KAKAO) ||
             url.includes(config.AUTH.REISSUE)
         ) {
@@ -74,6 +81,7 @@ api.interceptors.response.use(
         }
 
         original._retry = true;
+        const previousToken = localStorage.getItem("accessToken");
 
         try {
             const token = await renewAccessToken();
@@ -82,9 +90,11 @@ api.interceptors.response.use(
             original.headers.Authorization = `Bearer ${token}`;
             return api(original);
         } catch (refreshError) {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("user");
-            window.dispatchEvent(new Event("auth:changed"));
+            if (localStorage.getItem("accessToken") === previousToken) {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("user");
+                window.dispatchEvent(new Event("auth:changed"));
+            }
             return Promise.reject(refreshError);
         }
     }
