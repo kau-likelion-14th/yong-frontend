@@ -67,6 +67,7 @@ const Todo = ({ selectedDate, todosByDate, onComplete, onChanged, loading, loadE
 
     const openModal = () => {
         if (busy.current) return;
+        detailRequest.current?.abort();
         setError("");
         setEditingTodo(null);
         setIsModalOpen(true);

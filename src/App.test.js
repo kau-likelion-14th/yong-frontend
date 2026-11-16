@@ -154,6 +154,28 @@ test('저장 실패 시 입력을 유지하고 성공한 것처럼 목록에 추
   expect(db.todos.size).toBe(1);
 });
 
+test('상세 조회 중 새 할 일을 열면 늦은 조회 응답이 작성 내용을 덮어쓰지 않는다', async () => {
+  mount();
+  await addTodo('이전 할 일');
+  let finishDetail;
+  api.defaults.adapter = (config) => {
+    if (config.url === '/api/todos/100' && config.method === 'get') {
+      return new Promise((resolve) => {
+        finishDetail = () => resolve(respond(config, dto(db.todos.get(100), today)));
+      });
+    }
+    return adapter(config);
+  };
+  fireEvent.click(screen.getByText('이전 할 일'));
+  await waitFor(() => expect(finishDetail).toBeDefined());
+  fireEvent.click(screen.getByRole('button', { name: '할 일 추가' }));
+  const dialog = screen.getByRole('dialog', { name: '할 일 추가하기' });
+  fireEvent.change(within(dialog).getByLabelText('내용'), { target: { value: '작성 중인 새 할 일' } });
+  await act(async () => { finishDetail(); });
+  expect(screen.getByRole('dialog', { name: '할 일 추가하기' })).toBeInTheDocument();
+  expect(within(dialog).getByLabelText('내용')).toHaveValue('작성 중인 새 할 일');
+});
+
 test('여러 요일 루틴을 저장하고 날짜 이동·재진입 후 복원한다', async () => {
   let view = mount();
   await waitFor(() => expect(screen.getByRole('button', { name: '할 일 추가' })).toBeEnabled());
@@ -267,6 +289,25 @@ test('다른 탭에서 로그아웃하면 보호된 기록 화면에서 로그�
   localStorage.removeItem('accessToken'); localStorage.removeItem('user');
   act(() => window.dispatchEvent(new StorageEvent('storage', { key: 'accessToken', newValue: null })));
   await screen.findByRole('button', { name: '카카오 로그인' });
+});
+
+test('초기 재발급 실패가 다른 탭에서 완료한 로그인을 되돌리지 않는다', async () => {
+  localStorage.clear();
+  let finishRefresh;
+  let refreshStarted;
+  const started = new Promise((resolve) => { refreshStarted = resolve; });
+  axios.defaults.adapter = (config) => new Promise((resolve) => {
+    finishRefresh = () => resolve(respond(config, null, false));
+    refreshStarted();
+  });
+  mount();
+  await started;
+  localStorage.setItem('accessToken', 'isolated-other-session');
+  localStorage.setItem('user', JSON.stringify({ username: '새 계정' }));
+  act(() => window.dispatchEvent(new StorageEvent('storage', { key: 'accessToken', newValue: 'isolated-other-session' })));
+  await screen.findByText('등록된 할 일이 없습니다.');
+  await act(async () => { finishRefresh(); });
+  expect(screen.getByText('등록된 할 일이 없습니다.')).toBeInTheDocument();
 });
 
 test('프로필 초기 조회 실패 시 기본값을 서버에 덮어쓰지 않고 재시도할 수 있다', async () => {

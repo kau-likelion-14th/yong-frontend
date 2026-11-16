@@ -32,13 +32,9 @@ export default function ProtectedRoute() {
       try {
         await renewAccessToken();
 
-        if (active) {
-          setAuth("authenticated");
-        }
+        sync();
       } catch {
-        if (active) {
-          setAuth("guest");
-        }
+        sync();
       }
     };
 

@@ -70,7 +70,7 @@
   font-size: 18px;
   font-weight: 800;
   color: #333333;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .friend-detail-page__tag {
